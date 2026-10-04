@@ -1,0 +1,113 @@
+{
+  "name": "Simple Music",
+  "description": "A Telegram Music Player Bot, written in Python with Pyrogram and Py-Tgcalls.",
+  "logo": "https://files.catbox.moe/z1h6ow.jpg",
+  "keywords": [
+    "python3",
+    "telegram",
+    "bot",
+    "SIMPLE MUSIC",
+    "MusicBot",
+    "telegram-bot",
+    "pyrogram"
+  ],
+  "env": {
+    "API_ID": {
+      "description": "Get this value from https://my.telegram.org",
+      "value": "31551910",
+      "required": true
+    },
+    "API_HASH": {
+      "description": "Get this value from https://my.telegram.org",
+      "value": "c2e8e7946d5e4ea947d44b674008f33e",
+      "required": true
+    },
+    "BOT_TOKEN": {
+      "description": "A Bot's token from Botfather",
+      "value": "",
+      "required": true
+    },
+    "MONGO_DB_URI": {
+      "description": "Get a mongodb url from https://cloud.mongodb.com.",
+      "value": "",
+      "required": true
+    },
+    "OWNER_ID": {
+      "description": "The user id of user whom you would like to add as OWNER.",
+      "value": "8730025963",
+      "required": true
+    },
+    "STRING_SESSION": {
+      "description": "A Pyrogram v2 String Session from @StringSesssionGeneratorRobot on Telegram.",
+      "value": "",
+      "required": true
+    },
+    "UPSTREAM_REPO": {
+      "description": "Your Github repository link for updates.",
+      "value": "https://github.com/Simple-Boy-1k/SIMPLE_MUSIC.git",
+      "required": false
+    },
+    "YT_API_KEY": {
+      "description": "Your YouTube Data API Key.",
+      "value": "",
+      "required": false
+    },
+    "HEROKU_API_KEY": {
+      "description": "Your Heroku account's API key",
+      "value": "",
+      "required": false
+    },
+    "HEROKU_APP_NAME": {
+      "description": "Your heroku app name",
+      "value": "",
+      "required": false
+    },
+    "LOGGER_ID": {
+      "description": "Your Log Group ID, add your bot and promote as an admin with full rights!.",
+      "value": "-1003455128274",
+      "required": true
+    },
+    "SUPPORT_CHAT": {
+      "description": "Your support group link.",
+      "value": "https://t.me/+wcALPiJtMCQ0NWFh",
+      "required": false
+    },
+    "SUPPORT_CHANNEL": {
+      "description": "Your support channel link.",
+      "value": "https://t.me/music_Bot_Adda",
+      "required": false
+    },
+    "START_IMG_URL": {
+      "description": "Image URL for Start command.",
+      "value": "https://files.catbox.moe/z1h6ow.jpg",
+      "required": false
+    },
+    "PING_IMG_URL": {
+      "description": "Image URL for Ping command.",
+      "value": "https://files.catbox.moe/j40lbb.png",
+      "required": false
+    },
+    "HELP_IMG_URL": {
+      "description": "Image URL for Help menu.",
+      "value": "https://files.catbox.moe/b7qhd8.jpg",
+      "required": false
+    },
+    "BUTTON_COLOUR": {
+      "description": "Set to True for dynamic button colours.",
+      "value": "True",
+      "required": false
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    },
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git"
+    }
+  ],
+  "stack": "container"
+}
