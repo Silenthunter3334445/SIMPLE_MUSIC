@@ -44,11 +44,11 @@ MONGO_DB_URI = getenv("MONGO_DB_URI", None)
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # ❖ ᴀ ᴘ ɪ   s ᴇ ᴛ ᴛ ɪ ɴ ɢ s ❖
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-YTPROXY_URL = getenv("YTPROXY_URL", "https://tgapi.xbitcode.com")
-YT_API_KEY = getenv("YT_API_KEY", "") # youtube song api key, generate free key or buy paid plan from http://music.xbitcode.com
-API_URL = getenv("API_URL", "https://api.nexgenbots.xyz") #youtube song url
-VIDEO_API_URL = getenv("VIDEO_API_URL", 'https://api.video.nexgenbots.xyz')
-API_KEY = getenv("API_KEY", "") # youtube song api key, generate free key or buy paid plan from https://console.nexgenbots.xyz
+YTPROXY_URL = getenv("YTPROXY_URL", "https://api01.shrutibots.site")
+YT_API_KEY = getenv("YT_API_KEY", "") ## Get This API KEY FROM TELEGRAM BOT USERNAME: @SHRUTIAPIBOT 
+API_URL = getenv("API_URL", "https://api01.shrutibots.site") #youtube song url
+VIDEO_API_URL = getenv("VIDEO_API_URL", 'https://api01.shrutibots.site')
+API_KEY = getenv("API_KEY", "") ## Get This API KEY FROM TELEGRAM BOT USERNAME: @SHRUTIAPIBOT 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # ❖ ʟ ɪ ᴍ ɪ ᴛ s   ᴀ ɴ ᴅ   ɪ ᴅ s ❖
