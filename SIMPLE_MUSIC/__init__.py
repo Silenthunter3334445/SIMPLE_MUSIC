@@ -16,7 +16,6 @@ from SIMPLE_MUSIC.core.dir import dirr
 from SIMPLE_MUSIC.core.git import git
 from SIMPLE_MUSIC.core.userbot import Userbot
 from SIMPLE_MUSIC.misc import dbb, heroku
-from SafoneAPI import SafoneAPI
 from .logging import LOGGER
 
 dirr()
@@ -26,7 +25,6 @@ heroku()
 
 app = SIMPLE()
 userbot = Userbot()
-api = SafoneAPI()
 
 from .platforms import *
 
