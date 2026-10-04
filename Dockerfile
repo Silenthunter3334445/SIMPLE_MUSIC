@@ -9,7 +9,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN pip3 install --no-cache-dir --upgrade pip \
-    && pip3 install --no-cache-dir --upgrade -r requirements.txt
+RUN python -m pip install --no-cache-dir --upgrade pip \
+    && python -m pip install --no-cache-dir --upgrade -r requirements.txt
 
 CMD ["bash", "start"]
