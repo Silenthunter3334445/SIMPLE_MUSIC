@@ -19,9 +19,6 @@ from SIMPLE_MUSIC.utils.formatters import time_to_seconds
 
 DOWNLOAD_DIR = "downloads"
 
-# Optional API configuration.
-# These are read safely so the bot does not crash
-# if one of them is missing from config.py.
 try:
     from config import (
         API_URL as CONFIG_API_URL,
@@ -56,13 +53,25 @@ def get_video_id(link: str) -> str:
         return link.split("v=", 1)[1].split("&", 1)[0]
 
     if "youtu.be/" in link:
-        return link.split("youtu.be/", 1)[1].split("?", 1)[0].split("&", 1)[0]
+        return (
+            link.split("youtu.be/", 1)[1]
+            .split("?", 1)[0]
+            .split("&", 1)[0]
+        )
 
     if "/shorts/" in link:
-        return link.split("/shorts/", 1)[1].split("?", 1)[0].split("&", 1)[0]
+        return (
+            link.split("/shorts/", 1)[1]
+            .split("?", 1)[0]
+            .split("&", 1)[0]
+        )
 
     if "/live/" in link:
-        return link.split("/live/", 1)[1].split("?", 1)[0].split("&", 1)[0]
+        return (
+            link.split("/live/", 1)[1]
+            .split("?", 1)[0]
+            .split("&", 1)[0]
+        )
 
     return link.split("/", 1)[-1].split("?", 1)[0]
 
@@ -120,7 +129,10 @@ async def _download_stream(
                     if chunk:
                         await file.write(chunk)
 
-        if os.path.exists(path) and os.path.getsize(path) > 1024:
+        if (
+            os.path.exists(path)
+            and os.path.getsize(path) > 1024
+        ):
             return path
 
     except Exception:
@@ -172,7 +184,10 @@ async def engine_shrutibots(
             f"?type={media_type}&token={token}"
         )
 
-        return await _download_stream(stream_url, path)
+        return await _download_stream(
+            stream_url,
+            path,
+        )
 
     except Exception:
         return None
@@ -207,7 +222,9 @@ async def engine_xbit(
             if response.status != 200:
                 return None
 
-            data = await response.json(content_type=None)
+            data = await response.json(
+                content_type=None
+            )
 
         if data.get("status") != "success":
             return None
@@ -269,9 +286,14 @@ async def engine_nexgen(
             if response.status != 200:
                 return None
 
-            data = await response.json(content_type=None)
+            data = await response.json(
+                content_type=None
+            )
 
-        if str(data.get("status", "")).lower() != "done":
+        if (
+            str(data.get("status", "")).lower()
+            != "done"
+        ):
             return None
 
         stream_url = data.get("link")
@@ -310,14 +332,22 @@ async def _ytdlp_download(
         else:
             format_string = "bestaudio/best"
 
+        # Silent yt-dlp configuration.
         options = {
             "format": format_string,
             "outtmpl": final_path,
+
+            # Disable console progress.
             "quiet": True,
             "no_warnings": True,
+            "noprogress": True,
+
             "nocheckcertificate": True,
             "ignoreerrors": False,
             "noplaylist": True,
+
+            # Prevent yt-dlp logger output.
+            "logger": None,
         }
 
         if not is_video:
@@ -333,7 +363,10 @@ async def _ytdlp_download(
             return ydl.download([link])
 
     try:
-        await loop.run_in_executor(None, download)
+        await loop.run_in_executor(
+            None,
+            download,
+        )
 
         if (
             os.path.exists(final_path)
@@ -357,7 +390,10 @@ async def _core_download(
 ) -> Optional[str]:
     """Try APIs first, then yt-dlp."""
 
-    os.makedirs(DOWNLOAD_DIR, exist_ok=True)
+    os.makedirs(
+        DOWNLOAD_DIR,
+        exist_ok=True,
+    )
 
     vid_id = get_video_id(link)
 
@@ -371,6 +407,7 @@ async def _core_download(
         f"{vid_id}.{extension}",
     )
 
+    # Use cached file if available.
     if (
         os.path.exists(final_path)
         and os.path.getsize(final_path) > 1024
@@ -436,13 +473,17 @@ async def _core_download(
             if os.path.exists(final_path):
                 os.remove(final_path)
 
-            os.replace(winner, final_path)
+            os.replace(
+                winner,
+                final_path,
+            )
+
             return final_path
 
         except Exception:
             return winner
 
-    # API failed -> yt-dlp fallback
+    # API failed -> yt-dlp fallback.
     return await _ytdlp_download(
         link,
         is_video,
@@ -454,7 +495,9 @@ async def _core_download(
 # Public download functions
 # -------------------------------------------------
 
-async def download_song(link: str) -> Optional[str]:
+async def download_song(
+    link: str,
+) -> Optional[str]:
     """Download YouTube audio."""
     return await _core_download(
         link,
@@ -462,7 +505,9 @@ async def download_song(link: str) -> Optional[str]:
     )
 
 
-async def download_video(link: str) -> Optional[str]:
+async def download_video(
+    link: str,
+) -> Optional[str]:
     """Download YouTube video."""
     return await _core_download(
         link,
@@ -477,10 +522,21 @@ async def download_video(link: str) -> Optional[str]:
 class YouTubeAPI:
 
     def __init__(self):
-        self.base = "https://www.youtube.com/watch?v="
-        self.regex = r"(?:youtube\.com|youtu\.be)"
-        self.status = "https://www.youtube.com/oembed?url="
-        self.listbase = "https://youtube.com/playlist?list="
+        self.base = (
+            "https://www.youtube.com/watch?v="
+        )
+
+        self.regex = (
+            r"(?:youtube\.com|youtu\.be)"
+        )
+
+        self.status = (
+            "https://www.youtube.com/oembed?url="
+        )
+
+        self.listbase = (
+            "https://youtube.com/playlist?list="
+        )
 
         self.reg = re.compile(
             r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])"
@@ -524,20 +580,34 @@ class YouTubeAPI:
 
         for message in messages:
 
-            # Normal URL entities
-            for entity in (message.entities or []):
-                if entity.type == MessageEntityType.URL:
-                    text = message.text or message.caption
+            # Normal URL entities.
+            for entity in (
+                message.entities or []
+            ):
+                if (
+                    entity.type
+                    == MessageEntityType.URL
+                ):
+                    text = (
+                        message.text
+                        or message.caption
+                    )
 
                     if text:
                         return text[
                             entity.offset:
-                            entity.offset + entity.length
+                            entity.offset
+                            + entity.length
                         ]
 
-            # Text-link entities
-            for entity in (message.caption_entities or []):
-                if entity.type == MessageEntityType.TEXT_LINK:
+            # Text-link entities.
+            for entity in (
+                message.caption_entities or []
+            ):
+                if (
+                    entity.type
+                    == MessageEntityType.TEXT_LINK
+                ):
                     return entity.url
 
         return None
@@ -572,11 +642,19 @@ class YouTubeAPI:
             result = items[0]
 
             title = result.get("title")
-            duration_min = result.get("duration")
-            thumbnail_list = result.get("thumbnails") or []
+            duration_min = result.get(
+                "duration"
+            )
+
+            thumbnail_list = (
+                result.get("thumbnails")
+                or []
+            )
 
             thumbnail = (
-                thumbnail_list[0].get("url", "").split("?")[0]
+                thumbnail_list[0]
+                .get("url", "")
+                .split("?")[0]
                 if thumbnail_list
                 else None
             )
@@ -585,7 +663,11 @@ class YouTubeAPI:
 
             try:
                 duration_sec = (
-                    int(time_to_seconds(duration_min))
+                    int(
+                        time_to_seconds(
+                            duration_min
+                        )
+                    )
                     if duration_min
                     else 0
                 )
@@ -617,7 +699,11 @@ class YouTubeAPI:
             videoid,
         )
 
-        return details[0] if details else None
+        return (
+            details[0]
+            if details
+            else None
+        )
 
     # -------------------------------------------------
     # Duration
@@ -633,7 +719,11 @@ class YouTubeAPI:
             videoid,
         )
 
-        return details[1] if details else None
+        return (
+            details[1]
+            if details
+            else None
+        )
 
     # -------------------------------------------------
     # Thumbnail
@@ -649,7 +739,11 @@ class YouTubeAPI:
             videoid,
         )
 
-        return details[3] if details else None
+        return (
+            details[3]
+            if details
+            else None
+        )
 
     # -------------------------------------------------
     # Video
@@ -667,17 +761,26 @@ class YouTubeAPI:
             link = link.split("&")[0]
 
         try:
-            downloaded_file = await download_video(
-                link
+            downloaded_file = (
+                await download_video(link)
             )
 
             if downloaded_file:
-                return 1, downloaded_file
+                return (
+                    1,
+                    downloaded_file,
+                )
 
-            return 0, "Video download failed"
+            return (
+                0,
+                "Video download failed",
+            )
 
         except Exception as e:
-            return 0, f"Video download error: {e}"
+            return (
+                0,
+                f"Video download error: {e}",
+            )
 
     # -------------------------------------------------
     # Playlist
@@ -691,17 +794,25 @@ class YouTubeAPI:
         videoid: Union[bool, str] = None,
     ):
         if videoid:
-            link = self.listbase + str(link)
+            link = (
+                self.listbase
+                + str(link)
+            )
 
         if "&" in link:
             link = link.split("&")[0]
 
         try:
-            playlist = await Playlist.get(link)
+            playlist = await Playlist.get(
+                link
+            )
         except Exception:
             return []
 
-        videos = playlist.get("videos") or []
+        videos = (
+            playlist.get("videos")
+            or []
+        )
 
         ids = []
 
@@ -741,26 +852,42 @@ class YouTubeAPI:
             )
 
             data = await results.next()
-            items = data.get("result") or []
+            items = (
+                data.get("result")
+                or []
+            )
 
             if not items:
                 return None, None
 
             result = items[0]
 
-            thumbnail_list = result.get("thumbnails") or []
+            thumbnail_list = (
+                result.get("thumbnails")
+                or []
+            )
 
             thumbnail = (
-                thumbnail_list[0].get("url", "").split("?")[0]
+                thumbnail_list[0]
+                .get("url", "")
+                .split("?")[0]
                 if thumbnail_list
                 else None
             )
 
             track_details = {
-                "title": result.get("title"),
-                "link": result.get("link"),
-                "vidid": result.get("id"),
-                "duration_min": result.get("duration"),
+                "title": result.get(
+                    "title"
+                ),
+                "link": result.get(
+                    "link"
+                ),
+                "vidid": result.get(
+                    "id"
+                ),
+                "duration_min": result.get(
+                    "duration"
+                ),
                 "thumb": thumbnail,
             }
 
@@ -793,10 +920,15 @@ class YouTubeAPI:
             options = {
                 "quiet": True,
                 "no_warnings": True,
+                "noprogress": True,
                 "nocheckcertificate": True,
+                "logger": None,
             }
 
-            with yt_dlp.YoutubeDL(options) as ydl:
+            with yt_dlp.YoutubeDL(
+                options
+            ) as ydl:
+
                 info = ydl.extract_info(
                     link,
                     download=False,
@@ -805,22 +937,39 @@ class YouTubeAPI:
                 if not info:
                     return [], link
 
-                for fmt in info.get("formats", []):
+                for fmt in info.get(
+                    "formats",
+                    [],
+                ):
 
                     try:
                         format_name = str(
-                            fmt.get("format", "")
+                            fmt.get(
+                                "format",
+                                "",
+                            )
                         )
 
-                        if "dash" in format_name.lower():
+                        if (
+                            "dash"
+                            in format_name.lower()
+                        ):
                             continue
 
                         formats_available.append(
                             {
-                                "format": fmt.get("format"),
-                                "filesize": fmt.get("filesize"),
-                                "format_id": fmt.get("format_id"),
-                                "ext": fmt.get("ext"),
+                                "format": fmt.get(
+                                    "format"
+                                ),
+                                "filesize": fmt.get(
+                                    "filesize"
+                                ),
+                                "format_id": fmt.get(
+                                    "format_id"
+                                ),
+                                "ext": fmt.get(
+                                    "ext"
+                                ),
                                 "format_note": fmt.get(
                                     "format_note"
                                 ),
@@ -834,7 +983,10 @@ class YouTubeAPI:
         except Exception:
             return [], link
 
-        return formats_available, link
+        return (
+            formats_available,
+            link,
+        )
 
     # -------------------------------------------------
     # Slider / Search results
@@ -859,7 +1011,11 @@ class YouTubeAPI:
             )
 
             data = await search.next()
-            results = data.get("result") or []
+
+            results = (
+                data.get("result")
+                or []
+            )
 
             if (
                 query_type < 0
@@ -867,14 +1023,19 @@ class YouTubeAPI:
             ):
                 return None
 
-            result = results[query_type]
+            result = results[
+                query_type
+            ]
 
             thumbnail_list = (
-                result.get("thumbnails") or []
+                result.get("thumbnails")
+                or []
             )
 
             thumbnail = (
-                thumbnail_list[0].get("url", "").split("?")[0]
+                thumbnail_list[0]
+                .get("url", "")
+                .split("?")[0]
                 if thumbnail_list
                 else None
             )
@@ -915,16 +1076,19 @@ class YouTubeAPI:
             is_video = bool(video)
 
             if is_video:
-                downloaded_file = await download_video(
-                    link
+                downloaded_file = (
+                    await download_video(link)
                 )
             else:
-                downloaded_file = await download_song(
-                    link
+                downloaded_file = (
+                    await download_song(link)
                 )
 
             if downloaded_file:
-                return downloaded_file, True
+                return (
+                    downloaded_file,
+                    True,
+                )
 
             return None, False
 
