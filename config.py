@@ -54,8 +54,8 @@ API_KEY = getenv("API_KEY", "") # youtube song api key, generate free key or buy
 # ❖ ʟ ɪ ᴍ ɪ ᴛ s   ᴀ ɴ ᴅ   ɪ ᴅ s ❖
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 DURATION_LIMIT_MIN = int(getenv("DURATION_LIMIT", 17000))
-LOGGER_ID = int(getenv("LOGGER_ID", -1003455128274))
-OWNER_ID = int(getenv("OWNER_ID", 8730025963))
+LOGGER_ID = int(getenv("LOGGER_ID", -1003773179781))
+OWNER_ID = int(getenv("OWNER_ID", 8602292971))
 
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -69,7 +69,7 @@ DEEP_API = getenv("DEEP_API")
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # ❖ ɢ ɪ ᴛ ʜ ᴜ ʙ   s ᴇ ᴛ ᴛ ɪ ɴ ɢ s ❖
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-UPSTREAM_REPO = getenv("UPSTREAM_REPO", "https://github.com/Simple-Boy-1k/SIMPLE_MUSIC")
+UPSTREAM_REPO = getenv("UPSTREAM_REPO", "https://github.com/Silenthunter3334445/SIMPLE_MUSIC")
 UPSTREAM_BRANCH = getenv("UPSTREAM_BRANCH", "main")
 GIT_TOKEN = getenv("GIT_TOKEN", None)
 
