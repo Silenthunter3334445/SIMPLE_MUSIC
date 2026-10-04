@@ -10,6 +10,7 @@ WORKDIR /app
 COPY . .
 
 RUN python -m pip install --no-cache-dir --upgrade pip \
+    && python -m pip install --no-cache-dir --upgrade "yt-dlp[default]" \
     && python -m pip install --no-cache-dir --upgrade -r requirements.txt
 
 CMD ["bash", "start"]
