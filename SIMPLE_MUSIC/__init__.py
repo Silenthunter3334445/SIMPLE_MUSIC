@@ -1,6 +1,6 @@
 # -----------------------------------------------
 # 🔸 SIMPLE MUSIC Project
-# 🔹 Developed & Maintained by: Simple Boy (https://github.com/Simple-Boy-1k)
+# 🔹 Developed & Maintained by: Simple Boy (https://github.com/Silenthunter3334445)
 # 📅 Copyright © 2026 – All Rights Reserved
 #
 # 📖 License:
@@ -16,6 +16,7 @@ from SIMPLE_MUSIC.core.dir import dirr
 from SIMPLE_MUSIC.core.git import git
 from SIMPLE_MUSIC.core.userbot import Userbot
 from SIMPLE_MUSIC.misc import dbb, heroku
+from SafoneAPI import SafoneAPI
 from .logging import LOGGER
 
 dirr()
@@ -25,6 +26,7 @@ heroku()
 
 app = SIMPLE()
 userbot = Userbot()
+api = SafoneAPI()
 
 from .platforms import *
 
